@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Picker, Button, View } from 'react-native';
+import { ScrollView, Image, StyleSheet, Picker, Button, View } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 
 class FriendsScreen extends React.Component {
@@ -41,6 +41,9 @@ class FriendsScreen extends React.Component {
             <Picker.Item label="Been Awhile" value="java" />
             <Picker.Item label="Too Soon" value="js" />
           </Picker>
+          <Image
+          source={require('../assets/Town/atlas.png')}>
+          </Image>
         </ScrollView>
       );
     }
@@ -53,7 +56,7 @@ class FriendsScreen extends React.Component {
 }
 
 FriendsScreen.navigationOptions = {
-  title: 'Links',
+  title: 'Friends',
 };
 
 const styles = StyleSheet.create({

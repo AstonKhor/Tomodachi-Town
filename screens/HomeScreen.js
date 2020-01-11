@@ -9,64 +9,44 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Layout from '../constants/Layout.js';
+import PinchZoomView from 'react-native-pinch-zoom-view';
+import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
+
 
 import { MonoText } from '../components/StyledText';
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/robot-dev.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
-          />
-        </View>
-
-        <View style={styles.getStartedContainer}>
-          <DevelopmentModeNotice />
-
-          <Text style={styles.getStartedText}>This is the beginnings of the app here</Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-            <MonoText>screens/HomeScreen.js</MonoText>
+class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      
+    }
+  }
+  
+  
+  render() {
+    return (
+      <View style={styles.container}>
+          <ScrollView 
+            horizontal = {true}
+            snapToAlignment={"center"} >
+            <ReactNativeZoomableView minZoom={1} >
+              <Image 
+              style={{height: '100%', width: (Layout.window.height* 1.15)}}
+              source={require('../assets/Town/background-HarvestMoon.jpg')}>
+              </Image>
+            </ReactNativeZoomableView>
+          </ScrollView>
+          <View style={styles.tabBarInfoContainer}>
+            <Image
+              source={require('../assets/Town/Title.png')}
+              >
+            </Image>
           </View>
-
-          <Text style={styles.getStartedText}>
-            Change this text and your app will automatically reload.
-          </Text>
-        </View>
-
-        <View style={styles.helpContainer}>
-          <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>
-              Help, it didn’t automatically reload!
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-          <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
-          </MonoText>
-        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 HomeScreen.navigationOptions = {
@@ -173,13 +153,7 @@ const styles = StyleSheet.create({
       },
     }),
     alignItems: 'center',
-    backgroundColor: '#fbfbfb',
     paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
   },
   navigationFilename: {
     marginTop: 5,
@@ -196,3 +170,6 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
+
+
+export default HomeScreen;
