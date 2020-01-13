@@ -1,17 +1,10 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Modal, TouchableHighlight, AsyncStorage } from 'react-native';
 import Layout from '../constants/Layout.js';
 import PinchZoomView from 'react-native-pinch-zoom-view';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
+import { _retrieveData, _storeData } from './async-storage/data.js'
 
 
 import { MonoText } from '../components/StyledText';
@@ -19,30 +12,90 @@ import { MonoText } from '../components/StyledText';
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
+
+    // console.log(JSON.stringify({name: 'Aston Khor', count: 1, character: '../assets/charcters/gabe-idle-run.png', locx: [50], locy: [50]}))
     this.state = {
-      
+      people: _retrieveData(),
+      editModalVisible: false
     }
   }
-  
+  //People is an array of objects
+  //{ name: , count: , character: , loc: null}
+
+  edit(visible) {
+    this.setState({
+      editModalVisible: visible,
+    })
+  }
+  //create Modal with different player info
+  reset(person) {
+    let peopleUpdate = [];
+    if (person) {
+      for (let i = 0; i < this.state.people.length; i++) {
+        if (this.state.people[i].name === person.name) {
+          peopleUpdate[i] = {name: this.state.people[i].name, count: this.state.people[i].count, character: this.state.people[i].character, locx: null, locy: null}
+        } else {
+          peopleUpdate[i] = {name: this.state.people[i].name, count: this.state.people[i].count, character: this.state.people[i].character, locx: this.state.people[i].locx, locy: this.state.people[i].locx}
+        }
+      }
+      console.log('Resetting one', person.name);
+    } else {
+      for (let i = 0; i < this.state.people.length; i++) {
+        peopleUpdate[i] = {name: this.state.people[i].name, count: this.state.people[i].count, character: this.state.people[i].character, locx: null, locy: null}
+      }
+      console.log('Resetting All')
+    }
+    
+    this.setState({
+      people: peopleUpdate,
+    }, () =>{
+      _storeData(this.state.people);
+    })
+  }
   
   render() {
     return (
       <View style={styles.container}>
+          <Modal
+            animationType="slide"
+            transparent={false}
+            visible={this.state.editModalVisible}>
+            <View style={{marginTop: 22, padding: 50}}>
+              <View>
+                <Text>Friends</Text>
+                  <Button title='Done' onPress={() => {
+                    this.edit(!this.state.editModalVisible);
+                  }}></Button>
+
+                  <Button title='Reset All' onPress={() => {
+                    this.reset();
+                  }}></Button>
+              </View>
+            </View>
+          </Modal>
           <ScrollView 
             horizontal = {true}
             snapToAlignment={"center"} >
-            <ReactNativeZoomableView minZoom={1} >
+            <ReactNativeZoomableView minZoom={0.5} >
               <Image 
-              style={{height: '100%', width: (Layout.window.height* 1.15)}}
-              source={require('../assets/Town/background-HarvestMoon.jpg')}>
+              style={{height: '100%', width: (Layout.window.height* 1.20)}}
+              source={require('../assets/Town/background-HarvestMoon1.png')}>
               </Image>
             </ReactNativeZoomableView>
           </ScrollView>
           <View style={styles.tabBarInfoContainer}>
             <Image
+              style={{marginLeft: 10}}
               source={require('../assets/Town/Title.png')}
               >
             </Image>
+            <TouchableOpacity onPress={()=>{this.edit(true)}}>
+              <Image
+                style={{height: 40, width: 40, marginLeft: 10, marginTop: 10, backgroundColor: 'white', borderRadius: 30}}
+                source={require('../assets/Town/add-homes.png')}
+                >
+              </Image>
+            </TouchableOpacity>
           </View>
       </View>
     );
@@ -53,45 +106,10 @@ HomeScreen.navigationOptions = {
   header: null,
 };
 
-function DevelopmentModeNotice() {
-  if (__DEV__) {
-    const learnMoreButton = (
-      <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-        Learn more
-      </Text>
-    );
-
-    return (
-      <Text style={styles.developmentModeText}>
-        Development mode is enabled: your app will be slower but you can use
-        useful development tools. {learnMoreButton}
-      </Text>
-    );
-  } else {
-    return (
-      <Text style={styles.developmentModeText}>
-        You are not in development mode: your app will run at full speed.
-      </Text>
-    );
-  }
-}
-
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/development-mode/'
-  );
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes'
-  );
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#266402',
   },
   developmentModeText: {
     marginBottom: 20,
@@ -152,6 +170,7 @@ const styles = StyleSheet.create({
         elevation: 20,
       },
     }),
+    flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 20,
   },
