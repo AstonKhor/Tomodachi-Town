@@ -3,12 +3,13 @@ import { ScrollView, Image, StyleSheet, Picker, Button, View } from 'react-nativ
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 // import { EditModal } from './friends-modal/EditModal';
 import AddModal from './friends-modal/AddModal.js';
+import { _retrieveData, _storeData } from './async-storage/data';
 
 class FriendsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tableHead: ['', 'Birth', 'Hangouts(YTD)', 'Goal Hangouts'],
+      tableHead: ['', 'Birth', 'Hangouts (YTD)', 'Goal Hangouts'],
       tableData: [
         ['June 1', '5', '6'],
         ['May 1', '4', '4'],
@@ -19,21 +20,38 @@ class FriendsScreen extends React.Component {
       editModalVisible: false,
       addModalVisible: false,
     }
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
-  buildView () {
-      
+  componentDidMount() {
+    console.log('mounted friends')
+    _retrieveData()
+      .then((data) => {
+        JSON.parse(data);
+        console.log(data)
+
+
+        this.setState({
+
+        })
+      })
+  }
+
+  toggleModal (visible) {
+    this.setState({
+      addModalVisible: visible
+    })
   }
 
   render() {
     return (
       <View style={styles.page}>
         {/* <EditModal/> */}
-        <AddModal/>
+        <AddModal visible={this.state.addModalVisible} toggleModal={this.toggleModal}/>
         <ScrollView style={styles.container}>
           <View style={styles.editAdd}>
-            <Button title='Edit/Add' onPress={() => {this.setState({ editModalVisible: true })}}></Button>
-            <Button title='Add' onPress={() => {}}></Button>
+            <Button title='Edit/Add' onPress={() => {this.toggleModal(!this.state.editModalVisible)}}></Button>
+            <Button title='Add' onPress={() => {this.toggleModal(!this.state.addModalVisible)}}></Button>
           </View>
           <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
           <Row data={this.state.tableHead} flexArr={[1, 2, 1, 1]} style={styles.head} textStyle={styles.text}/>
