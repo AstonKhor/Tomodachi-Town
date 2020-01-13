@@ -1,26 +1,31 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Modal, TouchableHighlight, AsyncStorage } from 'react-native';
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Modal, TouchableHighlight } from 'react-native';
 import Layout from '../constants/Layout.js';
-import PinchZoomView from 'react-native-pinch-zoom-view';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
 import { _retrieveData, _storeData } from './async-storage/data.js'
-
-
 import { MonoText } from '../components/StyledText';
 
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
-
-    // console.log(JSON.stringify({name: 'Aston Khor', count: 1, character: '../assets/charcters/gabe-idle-run.png', locx: [50], locy: [50]}))
     this.state = {
-      people: _retrieveData(),
+      people: null,
       editModalVisible: false
     }
+    _storeData();  //for testing only, delete in production
   }
-  //People is an array of objects
-  //{ name: , count: , character: , loc: null}
+
+  componentDidMount() {
+    _retrieveData()
+      .then((data) => {
+        this.setState({
+          people: data
+        });
+        console.log(this.state.people);
+      })
+    console.log('mounted');
+  }
 
   edit(visible) {
     this.setState({
