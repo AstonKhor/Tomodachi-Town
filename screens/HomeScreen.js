@@ -13,9 +13,9 @@ class HomeScreen extends React.Component {
     this.state = {
       people: [],
       editModalVisible: false,
-      count: 0
+      count: 0,
     }
-    let sampleData = [{name: 'Aston Khor', count: 1, character: 'gabe', locx: [50], locy: [50]}]
+    let sampleData = [{name: 'Aston Khor', count: 1, character: 'char1', locx: [50], locy: [50], dob: 6/1, hangoutsYTD: 5, goalHangouts: 10}, {name: 'Andrew', count: 1, character: 'char1', locx: [50], locy: [50], dob: 6/1, hangoutsYTD: 3, goalHangouts: 12}, {name: 'Rachel', count: 1, character: 'char1', locx: [50], locy: [50], dob: 6/1, hangoutsYTD: 5, goalHangouts: 10}, {name: 'Jeff', count: 1, character: 'char1', locx: [50], locy: [50], dob: 6/1, hangoutsYTD: 0, goalHangouts: 0}]
     _storeData(sampleData);  //for testing only, delete in production
 
     this.edit = this.edit.bind(this);
