@@ -14,7 +14,7 @@ class HomeScreen extends React.Component {
       people: [],
       editModalVisible: false
     }
-    let sampleData = [{name: 'Aston Khor', count: 1, character: '../assets/charcters/gabe-idle-run.png', locx: [50], locy: [50]}]
+    let sampleData = [{name: 'Aston Khor', count: 1, character: 'gabe', locx: [50], locy: [50]}]
     _storeData(sampleData);  //for testing only, delete in production
 
     this.edit = this.edit.bind(this);

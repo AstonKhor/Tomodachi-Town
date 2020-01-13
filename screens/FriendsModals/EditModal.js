@@ -1,5 +1,6 @@
-import { Modal, View, Text, Button } from 'react-native';
+import { Modal, View, Text, Button, Image, StyleSheet } from 'react-native';
 import React from 'react';
+import images from '../../assets/characters/characters.js';
 
 export let EditModal = ({ visible, people, edit, reset}) => {
   return (
@@ -11,7 +12,12 @@ export let EditModal = ({ visible, people, edit, reset}) => {
         <View>
           <Text>Friends</Text>
           {people.map((friend) => {
-            return <Text key={friend.name}>{friend.name}</Text>
+            return (
+              <View style={styles.row} key={friend.name}>
+                <Text>{friend.name}</Text>
+                <Image source={images[friend.character]}/>
+                <Text> X {friend.count}</Text>
+              </View>)
           })}
           <Button title='Done' onPress={() => {
             edit(!visible);
@@ -26,4 +32,10 @@ export let EditModal = ({ visible, people, edit, reset}) => {
   )
 }
     
-    
+let styles = StyleSheet.create({
+  
+  row: {
+    flexDirection: 'row',
+
+  }
+})
