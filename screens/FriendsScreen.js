@@ -1,6 +1,8 @@
 import React from 'react';
 import { ScrollView, Image, StyleSheet, Picker, Button, View } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+// import { EditModal } from './friends-modal/EditModal';
+import AddModal from './friends-modal/AddModal.js';
 
 class FriendsScreen extends React.Component {
   constructor(props) {
@@ -14,16 +16,23 @@ class FriendsScreen extends React.Component {
         ['September 1', '2', '10']
       ],
       tableTitle: ['Aston Khor', 'Felix Ding', 'Peter Park', 'SueJung Shin'],
-      editModalVis: false,
+      editModalVisible: false,
+      addModalVisible: false,
     }
   }
 
   buildView () {
-    if (!this.state.editModalVis) {
-      return (
+      
+  }
+
+  render() {
+    return (
+      <View style={styles.page}>
+        {/* <EditModal/> */}
+        <AddModal/>
         <ScrollView style={styles.container}>
           <View style={styles.editAdd}>
-            <Button title='Edit/Add' onPress={() => {this.setState({ editModalVis: true })}}></Button>
+            <Button title='Edit/Add' onPress={() => {this.setState({ editModalVisible: true })}}></Button>
             <Button title='Add' onPress={() => {}}></Button>
           </View>
           <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
@@ -41,17 +50,10 @@ class FriendsScreen extends React.Component {
             <Picker.Item label="Been Awhile" value="java" />
             <Picker.Item label="Too Soon" value="js" />
           </Picker>
-          <Image
-          source={require('../assets/Town/atlas.png')}>
-          </Image>
         </ScrollView>
-      );
-    }
-
-  }
-
-  render() {
-    return this.buildView();
+      </View>
+      
+    );
   }
 }
 
@@ -60,6 +62,7 @@ FriendsScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
+  page: {flexDirection: "column", height: '100%'},
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
   head: {  height: 40,  backgroundColor: '#f1f8ff'  },
   wrapper: { flexDirection: 'row' },

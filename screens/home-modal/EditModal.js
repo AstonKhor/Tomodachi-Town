@@ -1,8 +1,8 @@
-import { Modal, View, Text, Button, Image, StyleSheet } from 'react-native';
+import { Modal, View, Text, Button, Image, StyleSheet, TouchableHighlight } from 'react-native';
 import React from 'react';
 import images from '../../assets/characters/characters.js';
 
-export let EditModal = ({ visible, people, edit, reset}) => {
+export let EditModal = ({ visible, people, edit, reset, placeMode }) => {
   return (
     <Modal
       animationType="slide"
@@ -13,16 +13,17 @@ export let EditModal = ({ visible, people, edit, reset}) => {
           <Text>Friends</Text>
           {people.map((friend) => {
             return (
-              <View style={styles.row} key={friend.name}>
-                <Text>{friend.name}</Text>
-                <Image source={images[friend.character]}/>
-                <Text> X {friend.count}</Text>
-              </View>)
+              <TouchableHighlight onPress={() => { placeMode(friend.name, friend.count) }} key={friend.name}>
+                <View style={styles.row} >
+                  <Text>{friend.name}</Text>
+                  <Image source={images[friend.character]}/>
+                  <Text> X {friend.count}</Text>
+                </View>
+              </TouchableHighlight>)
           })}
           <Button title='Done' onPress={() => {
             edit(!visible);
           }}></Button>
-
           <Button title='Reset All' onPress={() => {
             reset();
           }}></Button>
