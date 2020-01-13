@@ -44,7 +44,7 @@ const FriendsStack = createStackNavigator(
 );
 
 FriendsStack.navigationOptions = {
-  tabBarLabel: 'Links',
+  tabBarLabel: 'Friends',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
   ),
