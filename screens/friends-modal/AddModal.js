@@ -1,31 +1,28 @@
-import { Modal, View, Text, Image, StyleSheet, TouchableHighlight, ScrollView } from 'react-native';
 import React from 'react';
-import images from '../../assets/characters/characters.js';
+import { View, Text, Image, StyleSheet, TouchableHighlight, ScrollView } from 'react-native';
 import { Input, Button, Overlay } from 'react-native-elements';
 import { _retrieveData, _storeData } from '../async-storage/data';
+import images from '../../assets/characters/characters.js';
 
 class AddModal extends React.Component {
   constructor(props) {
     super(props);
-    this.currentSelection = 'gabe';
+    this.currentSelection = 'char1';
     this.state = {
       name: '',
       count: 1,
       locx: [],
       locy: [],
-      character: 'gabe',
+      character: 'char1',
     };
   }
 
   handleCharSelect (evt, name) {
-    console.log(this.props);
     this.currentSelection = name;
     this.setState({ 
       character: name
     })
   }
-
-
 
   handleAdd () {
     let person = this.state;
@@ -38,7 +35,7 @@ class AddModal extends React.Component {
     return (
       <Overlay
         animationType="slide"
-        transparent={false}
+        transparent={true}
         isVisible={this.props.visible}>
         <View style={{ marginTop: 0, padding: 15 }}>
           <Input placeholder='Name' onChangeText={(text) => this.setState({name: text})} errorStyle={{ color: 'red' }} errorMessage='ENTER A VALID NAME' />
@@ -46,10 +43,7 @@ class AddModal extends React.Component {
           <Text style={styles.currSelectChar}>{this.currentSelection}</Text>
           <ScrollView horizontal style={styles.characters}>
             {Object.keys(images).map((name) => {
-              let charStyle = 'unchosenChar';
-              if (this.currentSelection === name) {
-                charStyle = 'chosenChar'
-              }
+              let charStyle = this.currentSelection === name ? 'chosenChar': 'unchosenChar';
               return (
                 <TouchableHighlight onPress={(evt) => { this.handleCharSelect(evt, name)}} key={name}>
                   <Image style={styles[charStyle]} source={images[name]} />
@@ -68,7 +62,6 @@ class AddModal extends React.Component {
       </Overlay>
     )
   }
-
 }
 
 let styles = StyleSheet.create({

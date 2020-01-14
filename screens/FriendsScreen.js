@@ -1,24 +1,19 @@
 import React from 'react';
-import { ScrollView, Image, Text, StyleSheet, Picker, Button, View } from 'react-native';
-import { Table, TableWrapper, Row, Rows, Col, Cell } from 'react-native-table-component';
-// import { EditModal } from './friends-modal/EditModal';
+import { ScrollView, Text, StyleSheet, Button, View } from 'react-native';
+import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 import DropdownMenu from 'react-native-dropdown-menu';
+// import { EditModal } from './friends-modal/EditModal';
 import AddModal from './friends-modal/AddModal.js';
-import { _retrieveData, _storeData } from './async-storage/data';
+import { _retrieveData, _storeData } from './async-storage/data.js';
 
 class FriendsScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       tableHead: ['', 'Birth', 'Hangouts (YTD)', 'Goal Hangouts'],
-      tableData: [
-        ['June 1', '5', '6'],
-        ['May 1', '4', '4'],
-        ['October 1', '3', '2'],
-        ['September 1', '2', '10']
-      ],
-      tableTitle: ['Aston Khor', 'Felix Ding', 'Peter Park', 'SueJung Shin'],
-      editModalVisible: false,
+      tableData: [],
+      tableTitle: [],
+      // editModalVisible: false,
       addModalVisible: false,
       oldData: [],
       currIncrementing: ''
@@ -100,7 +95,7 @@ class FriendsScreen extends React.Component {
         </View>
         <ScrollView style={styles.container}>
           <View style={styles.editAdd}>
-            <Button title='Edit/Add' onPress={() => {this.toggleModal(!this.state.editModalVisible)}}></Button>
+            <Button title='Edit' onPress={() => {}}></Button>
             <Button title='Add' onPress={() => {this.toggleModal(!this.state.addModalVisible)}}></Button>
           </View>
           <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
@@ -110,14 +105,14 @@ class FriendsScreen extends React.Component {
               <Rows data={this.state.tableData} flexArr={[1.5, 1, 1]} style={styles.row} textStyle={styles.text}/>
             </TableWrapper>
           </Table>
-          <Picker selectedValue={this.state.sort}
+          {/* <Picker selectedValue={this.state.sort}
             style={{height: 10, width: 175}}
             onValueChange={(itemValue) =>
               this.setState({sort: itemValue})
             }>
             <Picker.Item label="Been Awhile" value="java" />
             <Picker.Item label="Too Soon" value="js" />
-          </Picker>
+          </Picker> */}
         </ScrollView>
       </View>
       
@@ -131,7 +126,7 @@ FriendsScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   menu: {flex: 1,flexDirection: 'column', width: 500},
-  incrementer: {zIndex: 1000, width: '100%', backgroundColor: '#ffd4b7', textAlign: 'center'},
+  incrementer: {zIndex: 1000, width: '100%', backgroundColor: '#ffd4b7', textAlign: 'center', marginBottom: 7},
   incrementerText: {fontSize: 28, textAlign: 'center'},
   page: {height: '100%', width: '100%', backgroundColor: '#ffd4b7'},
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
