@@ -1,117 +1,135 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import {
-  Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-
+import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Modal, TouchableHighlight } from 'react-native';
+import Layout from '../constants/Layout.js';
+import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
+import { _retrieveData, _storeData } from './async-storage/data.js'
 import { MonoText } from '../components/StyledText';
+import { EditModal } from './home-modal/EditModal.js';
+import seed from '../components/seed.js';
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}>
-        <View style={styles.welcomeContainer}>
-          <Image
-            source={
-              __DEV__
-                ? require('../assets/images/robot-dev.png')
-                : require('../assets/images/robot-prod.png')
-            }
-            style={styles.welcomeImage}
-          />
-        </View>
 
-        <View style={styles.getStartedContainer}>
-          <DevelopmentModeNotice />
+class HomeScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      people: [],
+      editModalVisible: false,
+      count: 0,
+    }
+    _storeData(seed());  //for testing only, delete in production
 
-          <Text style={styles.getStartedText}>This is the beginnings of the app here</Text>
+    this.edit = this.edit.bind(this);
+    this.reset = this.reset.bind(this);
+    this.togglePlaceMode = this.togglePlaceMode.bind(this);
+  }
 
-          <View
-            style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
-            <MonoText>screens/HomeScreen.js</MonoText>
+  componentDidMount() {
+    this.retrieveAndUpdate();
+    console.log('mounted');
+  }
+
+  retrieveAndUpdate () {
+    return _retrieveData()
+      .then((data) => {
+        this.setState({
+          people: JSON.parse(data)
+        });
+      })
+  }
+
+  edit(visible) {
+    this.retrieveAndUpdate()
+      .then(() => {
+        this.setState({
+          editModalVisible: visible,
+        })
+      })
+  }
+  //create Modal with different player info
+  reset(person) {
+    let peopleUpdate = [];
+    if (person) {
+      for (let i = 0; i < this.state.people.length; i++) {
+        peopleUpdate[i] = JSON.parse(JSON.stringify(this.state.people[i]));
+        if (this.state.people[i].name === person.name) {
+          peopleUpdate[i].locx = [];
+          peopleUpdate[i].locy = [];
+        }
+      }
+      console.log('Resetting one', person.name);
+    } else {
+      for (let i = 0; i < this.state.people.length; i++) {
+        peopleUpdate[i] = JSON.parse(JSON.stringify(this.state.people[i]));
+        peopleUpdate[i].locx = [];
+        peopleUpdate[i].locy = [];
+      }
+      console.log('Resetting All');
+    }
+    
+    _storeData(this.state.people)
+      .then(() => {
+        this.retrieveAndUpdate();
+      })
+  }
+
+  togglePlaceMode (person, count) {
+    console.log('here', count);
+
+    this.setState({
+      count: count,
+      editModalVisible: false
+    })
+  }
+
+  render() {
+    return (
+      // <TouchableHighlight style={styles.placeModeMap} onPress={(data) => {console.log(data)}}>
+        <View style={styles.map}>
+          <EditModal visible={this.state.editModalVisible} people={this.state.people} edit={this.edit} reset={this.reset} placeMode={this.togglePlaceMode}/>
+          <ScrollView 
+            horizontal = {true}
+            snapToAlignment={"center"} >
+            <ReactNativeZoomableView minZoom={0.5} >
+              <Image 
+              style={{height: '100%', width: (Layout.window.height* 1.20)}}
+              source={require('../assets/Town/background-HarvestMoon1.png')}>
+              </Image>
+            </ReactNativeZoomableView>
+          </ScrollView>
+          <View style={styles.tabBarInfoContainer}>
+            <Image
+              style={{marginLeft: 10}}
+              source={require('../assets/Town/Title.png')}
+              >
+            </Image>
+            <TouchableOpacity onPress={()=>{this.edit(true)}}>
+              <Image
+                style={{height: 40, width: 40, marginLeft: 10, marginTop: 10, backgroundColor: 'white', borderRadius: 30}}
+                source={require('../assets/Town/add-homes.png')}
+                >
+              </Image>
+            </TouchableOpacity>
           </View>
-
-          <Text style={styles.getStartedText}>
-            Change this text and your app will automatically reload.
-          </Text>
         </View>
-
-        <View style={styles.helpContainer}>
-          <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>
-              Help, it didn’t automatically reload!
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-          <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
-          </MonoText>
-        </View>
-      </View>
-    </View>
-  );
+      // </TouchableHighlight>
+    );
+  }
 }
 
 HomeScreen.navigationOptions = {
   header: null,
 };
 
-function DevelopmentModeNotice() {
-  if (__DEV__) {
-    const learnMoreButton = (
-      <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-        Learn more
-      </Text>
-    );
-
-    return (
-      <Text style={styles.developmentModeText}>
-        Development mode is enabled: your app will be slower but you can use
-        useful development tools. {learnMoreButton}
-      </Text>
-    );
-  } else {
-    return (
-      <Text style={styles.developmentModeText}>
-        You are not in development mode: your app will run at full speed.
-      </Text>
-    );
-  }
-}
-
-function handleLearnMorePress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/development-mode/'
-  );
-}
-
-function handleHelpPress() {
-  WebBrowser.openBrowserAsync(
-    'https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes'
-  );
-}
-
 const styles = StyleSheet.create({
-  container: {
+  placeModeMap: {
+    zIndex: 105,
+    opacity: 50
+  },
+  map: {
+    zIndex: 100,
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#266402',
   },
   developmentModeText: {
     marginBottom: 20,
@@ -172,14 +190,9 @@ const styles = StyleSheet.create({
         elevation: 20,
       },
     }),
+    flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fbfbfb',
     paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
   },
   navigationFilename: {
     marginTop: 5,
@@ -196,3 +209,6 @@ const styles = StyleSheet.create({
     color: '#2e78b7',
   },
 });
+
+
+export default HomeScreen;
