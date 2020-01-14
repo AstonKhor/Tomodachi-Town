@@ -19,35 +19,60 @@ class FriendsScreen extends React.Component {
       tableTitle: ['Aston Khor', 'Felix Ding', 'Peter Park', 'SueJung Shin'],
       editModalVisible: false,
       addModalVisible: false,
+      oldData: []
     }
     this.toggleModal = this.toggleModal.bind(this);
+    this.saveAndUpdatePage = this.saveAndUpdatePage.bind(this);
   }
 
   componentDidMount() {
     console.log('mounted friends')
-    _retrieveData()
+    this.retrieveAndUpdatePage();
+  }
+
+  retrieveAndUpdatePage() {
+    return _retrieveData()
       .then((data) => {
-        JSON.parse(data);
-        console.log(data)
-
-
+        console.log('retrieved', data)
+        let names = [];
+        let selectData = [];
+        data = JSON.parse(data);
+        for (let i = 0; i < data.length; i++) {
+          names.push(data[i].name);
+          selectData[i] = [data[i].dob, data[i].hangoutsYTD, data[i].goalHangouts];
+        }
         this.setState({
-
+          tableData: selectData,
+          tableTitle: names,
+          oldData: data
         })
       })
   }
 
   toggleModal (visible) {
-    this.setState({
-      addModalVisible: visible
-    })
+    this.retrieveAndUpdatePage()
+      .then(() => {
+        this.setState({
+          addModalVisible: visible
+        })
+      })
+  }
+
+  saveAndUpdatePage (data) {
+    let copy = JSON.parse(JSON.stringify(this.state.oldData))
+    copy.push(data);
+    console.log('copy', copy);
+    _storeData(copy)
+      .then(() => {
+        this.componentDidMount();
+      })
   }
 
   render() {
     return (
       <View style={styles.page}>
         {/* <EditModal/> */}
-        <AddModal visible={this.state.addModalVisible} toggleModal={this.toggleModal}/>
+        <AddModal visible={this.state.addModalVisible} toggleModal={this.toggleModal} save={this.saveAndUpdatePage}/>
         <ScrollView style={styles.container}>
           <View style={styles.editAdd}>
             <Button title='Edit/Add' onPress={() => {this.toggleModal(!this.state.editModalVisible)}}></Button>
