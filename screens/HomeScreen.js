@@ -7,6 +7,7 @@ import { _retrieveData, _storeData } from './async-storage/data.js'
 import { MonoText } from '../components/StyledText';
 import { EditModal } from './home-modal/EditModal.js';
 
+
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -15,7 +16,7 @@ class HomeScreen extends React.Component {
       editModalVisible: false,
       count: 0,
     }
-    let sampleData = [{name: 'Aston Khor', count: 1, character: 'char1', locx: [50], locy: [50], dob: 6/1, hangoutsYTD: 5, goalHangouts: 10}, {name: 'Andrew', count: 1, character: 'char1', locx: [50], locy: [50], dob: 6/1, hangoutsYTD: 3, goalHangouts: 12}, {name: 'Rachel', count: 1, character: 'char1', locx: [50], locy: [50], dob: 6/1, hangoutsYTD: 5, goalHangouts: 10}, {name: 'Jeff', count: 1, character: 'char1', locx: [50], locy: [50], dob: 6/1, hangoutsYTD: 0, goalHangouts: 0}]
+    let sampleData = [{name: 'Aston Khor', count: 1, character: 'char1', locx: [50], locy: [50], dob: '6/1', hangoutsYTD: 5, goalHangouts: 10}, {name: 'Andrew', count: 1, character: 'char1', locx: [50], locy: [50], dob: '6/1', hangoutsYTD: 3, goalHangouts: 12}, {name: 'Rachel', count: 1, character: 'char1', locx: [50], locy: [50], dob: '6/1', hangoutsYTD: 5, goalHangouts: 10}, {name: 'Jeff', count: 1, character: 'char1', locx: [50], locy: [50], dob: '6/1', hangoutsYTD: 0, goalHangouts: 0}]
     _storeData(sampleData);  //for testing only, delete in production
 
     this.edit = this.edit.bind(this);
@@ -24,19 +25,26 @@ class HomeScreen extends React.Component {
   }
 
   componentDidMount() {
-    _retrieveData()
+    this.retrieveAndUpdate();
+    console.log('mounted');
+  }
+
+  retrieveAndUpdate () {
+    return _retrieveData()
       .then((data) => {
         this.setState({
           people: JSON.parse(data)
         });
       })
-    console.log('mounted');
   }
 
   edit(visible) {
-    this.setState({
-      editModalVisible: visible,
-    })
+    this.retrieveAndUpdate()
+      .then(() => {
+        this.setState({
+          editModalVisible: visible,
+        })
+      })
   }
   //create Modal with different player info
   reset(person) {
@@ -60,9 +68,7 @@ class HomeScreen extends React.Component {
     _storeData(this.state.people)
       .then(() => {
         // console.log(peopleUpdate);
-        this.setState({
-          people: peopleUpdate,
-        });
+        this.com
       })
   }
 
