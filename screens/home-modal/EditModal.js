@@ -1,20 +1,24 @@
 import { Modal, View, Text, Image, StyleSheet, TouchableHighlight } from 'react-native';
 import React from 'react';
-import { Button } from 'react-native-elements';
+import { Button, Overlay } from 'react-native-elements';
 import images from '../../assets/characters/characters.js';
 
 export let EditModal = ({ visible, people, edit, reset, placeMode }) => {
   return (
-    <Modal
-      animationType="slide"
-      transparent={false}
-      visible={visible}>
-      <View style={{marginTop: 22, padding: 50}}>
+    <Overlay
+        animationType="slide"
+        transparent={true}
+        isVisible={visible}>
+      <View style={{padding: 10, justifyContent: 'center', alignItems: 'center'}}>
         <View>
-          <Text>Friends</Text>
+          <Image
+            style={styles.logo}
+            source={require('../../assets/Town/Title.png')}>
+          </Image>
+          <Text></Text>
           {people.map((friend) => {
             return (
-              <TouchableHighlight onPress={() => { placeMode(friend.name, friend.count) }} key={friend.name}>
+              <TouchableHighlight style={styles.person} onPress={() => { placeMode(friend.name, friend.count) }} key={friend.name}>
                 <View style={styles.row} >
                   <Text>{friend.name}</Text>
                   <Image source={images[friend.character]}/>
@@ -28,16 +32,21 @@ export let EditModal = ({ visible, people, edit, reset, placeMode }) => {
           </View>
         </View>
       </View>
-    </Modal>
+    </Overlay>
   )
 }
     
 let styles = StyleSheet.create({
+  logo: {
+    height: 64,
+    width: 272,
+    justifyContent: 'center'
+  },
   buttons: {
     flexDirection: 'column',
   },
   button: {
-    backgroundColor: '#4ee44e',
+    backgroundColor: 'green',
     margin: 5,
   },
   row: {

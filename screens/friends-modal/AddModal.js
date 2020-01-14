@@ -38,7 +38,7 @@ class AddModal extends React.Component {
     return (
       <Overlay
         animationType="slide"
-        transparent={false}
+        transparent={true}
         isVisible={this.props.visible}>
         <View style={{ marginTop: 0, padding: 15 }}>
           <Input placeholder='Name' onChangeText={(text) => this.setState({name: text})} errorStyle={{ color: 'red' }} errorMessage='ENTER A VALID NAME' />
