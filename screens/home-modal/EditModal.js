@@ -17,6 +17,7 @@ export let EditModal = ({ visible, people, edit, reset, placeMode }) => {
           </Image>
           <Text></Text>
           {people.map((friend) => {
+            //conditional rendering based on if characters had been placed
             return (
               <TouchableHighlight style={styles.person} onPress={() => { placeMode(friend.name, friend.count) }} key={friend.name}>
                 <View style={styles.row} >

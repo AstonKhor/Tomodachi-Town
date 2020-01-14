@@ -16,6 +16,8 @@ class HomeScreen extends React.Component {
       people: [],
       editModalVisible: false,
       count: 0,
+      placeMode: false,
+      person: ''
     }
     _storeData(seed());  //for testing only, delete in production
 
@@ -74,29 +76,61 @@ class HomeScreen extends React.Component {
   }
 
   togglePlaceMode (person, count) {
-    console.log('here', count);
+    if (count > 0) {
+      console.log('placemode on')
+      this.setState({
+        count: count,
+        editModalVisible: false,
+        placeMode: true,
+        person: person
+      })
+    } else {
+      console.log('placemode off');
+      this.setState({
+        count: count,
+        editModalVisible: false,
+        placeMode: false
+      })
+    }
+  }
 
-    this.setState({
-      count: count,
-      editModalVisible: false
-    })
+  handlePlace (data, callback) {
+    if (this.state.placeMode) {
+      let locx = data.touchHistory.touchBank[1].currentPageX;
+      let locy = data.touchHistory.touchBank[1].currentPageY;
+      let peopleCopy = JSON.parse(JSON.stringify(this.state.people));
+      for (let i = 0; i < peopleCopy.length; i++) {
+        if (peopleCopy[i].name === this.state.person) {
+          peopleCopy[i].locx.push(locx);
+          peopleCopy[i].locy.push(locy);
+          console.log(peopleCopy[i]);
+        }
+      }
+      this.setState({
+        people: peopleCopy,
+        count: this.state.count - 1
+      }, () => {this.togglePlaceMode(this.state.person, this.state.count)})
+    }
   }
 
   render() {
     return (
-      // <TouchableHighlight style={styles.placeModeMap} onPress={(data) => {console.log(data)}}>
+      
         <View style={styles.map}>
           <EditModal visible={this.state.editModalVisible} people={this.state.people} edit={this.edit} reset={this.reset} placeMode={this.togglePlaceMode}/>
-          <ScrollView 
-            horizontal = {true}
-            snapToAlignment={"center"} >
-            <ReactNativeZoomableView minZoom={0.5} >
-              <Image 
-              style={{height: '100%', width: (Layout.window.height* 1.20)}}
-              source={require('../assets/Town/background-HarvestMoon1.png')}>
-              </Image>
-            </ReactNativeZoomableView>
-          </ScrollView>
+          
+            <ScrollView 
+              horizontal = {true}>
+              <ReactNativeZoomableView minZoom={0.7} >
+                
+                <TouchableHighlight activeOpacity={1} style={styles.placeModeMap} onPress={(data) => {this.handlePlace(data)}}>
+                  <Image 
+                  style={{height: '100%', width: (Layout.window.height* 1.20)}}
+                  source={require('../assets/Town/background-HarvestMoon1.png')}>
+                  </Image>
+                </TouchableHighlight>
+              </ReactNativeZoomableView>
+            </ScrollView>
           <View style={styles.tabBarInfoContainer}>
             <Image
               style={styles.logo}
@@ -110,7 +144,6 @@ class HomeScreen extends React.Component {
             </TouchableOpacity>
           </View>
         </View>
-      // </TouchableHighlight>
     );
   }
 }
@@ -135,11 +168,12 @@ const styles = StyleSheet.create({
   },
   placeModeMap: {
     zIndex: 105,
-    opacity: 50
+    opacity: 1
   },
   map: {
     zIndex: 100,
     flex: 1,
+    opacity: 1,
     backgroundColor: '#266402',
   },
   developmentModeText: {
