@@ -1,5 +1,6 @@
-import { Modal, View, Text, Button, Image, StyleSheet, TouchableHighlight } from 'react-native';
+import { Modal, View, Text, Image, StyleSheet, TouchableHighlight } from 'react-native';
 import React from 'react';
+import { Button } from 'react-native-elements';
 import images from '../../assets/characters/characters.js';
 
 export let EditModal = ({ visible, people, edit, reset, placeMode }) => {
@@ -21,12 +22,10 @@ export let EditModal = ({ visible, people, edit, reset, placeMode }) => {
                 </View>
               </TouchableHighlight>)
           })}
-          <Button title='Done' onPress={() => {
-            edit(!visible);
-          }}></Button>
-          <Button title='Reset All' onPress={() => {
-            reset();
-          }}></Button>
+          <View style={styles.backgroundColor}>
+          <Button buttonStyle={styles.button} title='Done' onPress={() => edit(!visible) }></Button>
+          <Button buttonStyle={styles.button} title='Reset All' onPress={() => reset() }></Button>
+          </View>
         </View>
       </View>
     </Modal>
@@ -34,7 +33,13 @@ export let EditModal = ({ visible, people, edit, reset, placeMode }) => {
 }
     
 let styles = StyleSheet.create({
-  
+  buttons: {
+    flexDirection: 'column',
+  },
+  button: {
+    backgroundColor: '#4ee44e',
+    margin: 5,
+  },
   row: {
     flexDirection: 'row',
 

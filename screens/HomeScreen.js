@@ -69,7 +69,6 @@ class HomeScreen extends React.Component {
     
     _storeData(this.state.people)
       .then(() => {
-        // console.log(peopleUpdate);
         this.retrieveAndUpdate();
       })
   }
@@ -85,7 +84,7 @@ class HomeScreen extends React.Component {
 
   render() {
     return (
-      // <TouchableHighlight onPress={(data) => {console.log(data)}}>
+      // <TouchableHighlight style={styles.placeModeMap} onPress={(data) => {console.log(data)}}>
         <View style={styles.map}>
           <EditModal visible={this.state.editModalVisible} people={this.state.people} edit={this.edit} reset={this.reset} placeMode={this.togglePlaceMode}/>
           <ScrollView 
