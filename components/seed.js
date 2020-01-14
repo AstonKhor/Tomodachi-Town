@@ -15,6 +15,24 @@ let seed = () => {
     babySeed.locy = [];
     seedData.push(babySeed);
   }
+  seedData.sort((a,b) => {
+    if (a.name > b.name) {
+      return 1;
+    }
+    if (a.name < b.name) {
+      return -1;
+    }
+    return 0;
+  });
+  seedData.sort((a,b) => {
+    if (a.goalHangouts > b.goalHangouts) {
+      return -1;
+    }
+    if (a.goalHangouts < b.goalHangouts) {
+      return 1;
+    }
+    return 0;
+  });
   return seedData
 }
 

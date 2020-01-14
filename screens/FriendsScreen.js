@@ -131,7 +131,7 @@ FriendsScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   menu: {flex: 1,flexDirection: 'column', width: 500},
-  incrementer: {zIndex: 1000, width: '100%', backgroundColor: '#ffd4b7', textAlign: 'center'},
+  incrementer: {zIndex: 1000, width: '100%', backgroundColor: '#ffd4b7', textAlign: 'center', marginBottom: 7},
   incrementerText: {fontSize: 28, textAlign: 'center'},
   page: {height: '100%', width: '100%', backgroundColor: '#ffd4b7'},
   container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },

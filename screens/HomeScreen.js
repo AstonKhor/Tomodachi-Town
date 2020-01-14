@@ -61,14 +61,12 @@ class HomeScreen extends React.Component {
           peopleUpdate[i].locy = [];
         }
       }
-      console.log('Resetting one', person.name);
     } else {
       for (let i = 0; i < this.state.people.length; i++) {
         peopleUpdate[i] = JSON.parse(JSON.stringify(this.state.people[i]));
         peopleUpdate[i].locx = [];
         peopleUpdate[i].locy = [];
       }
-      console.log('Resetting All');
     }
     
     _storeData(peopleUpdate)
@@ -79,7 +77,6 @@ class HomeScreen extends React.Component {
 
   togglePlaceMode (person, count) {
     if (count > 0) {
-      console.log('placemode on')
       this.setState({
         count: count,
         editModalVisible: false,
@@ -87,7 +84,6 @@ class HomeScreen extends React.Component {
         person: person
       }, ()=>{console.log(this.state)})
     } else {
-      console.log('placemode off');
       this.setState({
         count: count,
         editModalVisible: false,
@@ -124,22 +120,23 @@ class HomeScreen extends React.Component {
     return (
         <View style={styles.map}>
           <EditModal visible={this.state.editModalVisible} people={this.state.people} edit={this.edit} reset={this.reset} placeMode={this.togglePlaceMode} reset={this.reset}/>
-            <ScrollView 
-              horizontal = {true}>
-              <ReactNativeZoomableView minZoom={0.7} >
-                {this.state.people.map((person)=> {
-                  return (person.locx.map((locx, idx) => {
-                    return <Image key={locx} style={{position: 'absolute', left: person.locx[idx], top: person.locy[idx], width: 15, height: 25, zIndex: 10001}} source={images[person.character]}></Image>
-                  }))
-                })}
-                <TouchableHighlight activeOpacity={1} style={styles.placeModeMap} onPress={(data) => {this.handlePlace(data)}}>
-                  <Image 
-                  style={{height: '100%', width: (Layout.window.height* 1.20)}}
-                  source={require('../assets/Town/background-HarvestMoon1.png')}>
-                  </Image>
-                </TouchableHighlight>
-              </ReactNativeZoomableView>
-            </ScrollView>
+          <ScrollView 
+            horizontal = {true}>
+            <ReactNativeZoomableView minZoom={1} >
+              {this.state.people.map((person)=> {
+                return (person.locx.map((locx, idx) => {
+                  return <Image key={locx} style={{position: 'absolute', left: person.locx[idx], top: person.locy[idx], width: 15, height: 25, zIndex: 10001}} source={images[person.character]}></Image>
+                }))
+              })}
+              
+              <TouchableHighlight activeOpacity={1} style={styles.placeModeMap} onPress={(data) => {this.handlePlace(data)}}>
+                <Image 
+                style={{height: '100%', width: (Layout.window.height* 1.20)}}
+                source={require('../assets/Town/background-HarvestMoon1.png')}>
+                </Image>
+              </TouchableHighlight>
+            </ReactNativeZoomableView>
+          </ScrollView>
           <View style={styles.tabBarInfoContainer}>
             <Image
               style={styles.logo}
@@ -185,49 +182,6 @@ const styles = StyleSheet.create({
     opacity: 1,
     backgroundColor: '#266402',
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
   tabBarInfoContainer: {
     width: '100%',
     position: 'absolute',
@@ -252,18 +206,7 @@ const styles = StyleSheet.create({
   },
   navigationFilename: {
     marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
-  },
+  }
 });
 
 

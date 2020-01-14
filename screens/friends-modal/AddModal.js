@@ -25,8 +25,6 @@ class AddModal extends React.Component {
     })
   }
 
-
-
   handleAdd () {
     let person = this.state;
     person['hangoutsYTD'] = 0;
@@ -68,7 +66,6 @@ class AddModal extends React.Component {
       </Overlay>
     )
   }
-
 }
 
 let styles = StyleSheet.create({
