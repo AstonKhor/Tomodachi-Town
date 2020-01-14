@@ -99,15 +99,13 @@ class HomeScreen extends React.Component {
           </ScrollView>
           <View style={styles.tabBarInfoContainer}>
             <Image
-              style={{marginLeft: 10}}
-              source={require('../assets/Town/Title.png')}
-              >
+              style={styles.logo}
+              source={require('../assets/Town/Title.png')}>
             </Image>
             <TouchableOpacity onPress={()=>{this.edit(true)}}>
               <Image
-                style={{height: 40, width: 40, marginLeft: 10, marginTop: 10, backgroundColor: 'white', borderRadius: 30}}
-                source={require('../assets/Town/add-homes.png')}
-                >
+                style={styles.add}
+                source={require('../assets/Town/add-homes.png')}>
               </Image>
             </TouchableOpacity>
           </View>
@@ -122,6 +120,19 @@ HomeScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
+  logo: {
+    marginLeft: 10,
+    height: 70,
+    width: 298,
+  },
+  add: {
+    height: 40,
+    width: 40,
+    marginLeft: 0,
+    marginTop: 10,
+    backgroundColor: '#ffd4b7',
+    borderRadius: 20
+  },
   placeModeMap: {
     zIndex: 105,
     opacity: 50
@@ -175,6 +186,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   tabBarInfoContainer: {
+    width: '100%',
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -192,6 +204,7 @@ const styles = StyleSheet.create({
     }),
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'center',
     paddingVertical: 20,
   },
   navigationFilename: {
