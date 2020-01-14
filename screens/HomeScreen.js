@@ -7,6 +7,7 @@ import { _retrieveData, _storeData } from './async-storage/data.js'
 import { MonoText } from '../components/StyledText';
 import { EditModal } from './home-modal/EditModal.js';
 import seed from '../components/seed.js';
+import images from '../assets/characters/characters';
 
 
 class HomeScreen extends React.Component {
@@ -24,6 +25,7 @@ class HomeScreen extends React.Component {
     this.edit = this.edit.bind(this);
     this.reset = this.reset.bind(this);
     this.togglePlaceMode = this.togglePlaceMode.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
@@ -69,7 +71,7 @@ class HomeScreen extends React.Component {
       console.log('Resetting All');
     }
     
-    _storeData(this.state.people)
+    _storeData(peopleUpdate)
       .then(() => {
         this.retrieveAndUpdate();
       })
@@ -83,14 +85,14 @@ class HomeScreen extends React.Component {
         editModalVisible: false,
         placeMode: true,
         person: person
-      })
+      }, ()=>{console.log(this.state)})
     } else {
       console.log('placemode off');
       this.setState({
         count: count,
         editModalVisible: false,
         placeMode: false
-      })
+      }, ()=>{console.log(this.state)})
     }
   }
 
@@ -103,26 +105,33 @@ class HomeScreen extends React.Component {
         if (peopleCopy[i].name === this.state.person) {
           peopleCopy[i].locx.push(locx);
           peopleCopy[i].locy.push(locy);
-          console.log(peopleCopy[i]);
         }
       }
       this.setState({
         people: peopleCopy,
         count: this.state.count - 1
-      }, () => {this.togglePlaceMode(this.state.person, this.state.count)})
+      }, () => {
+        this.togglePlaceMode(this.state.person, this.state.count);
+        _storeData(this.state.people)
+          .then(()=>{
+            this.retrieveAndUpdate();
+          })
+      })
     }
   }
 
   render() {
     return (
-      
         <View style={styles.map}>
-          <EditModal visible={this.state.editModalVisible} people={this.state.people} edit={this.edit} reset={this.reset} placeMode={this.togglePlaceMode}/>
-          
+          <EditModal visible={this.state.editModalVisible} people={this.state.people} edit={this.edit} reset={this.reset} placeMode={this.togglePlaceMode} reset={this.reset}/>
             <ScrollView 
               horizontal = {true}>
               <ReactNativeZoomableView minZoom={0.7} >
-                
+                {this.state.people.map((person)=> {
+                  return (person.locx.map((locx, idx) => {
+                    return <Image key={locx} style={{position: 'absolute', left: person.locx[idx], top: person.locy[idx], width: 15, height: 25, zIndex: 10001}} source={images[person.character]}></Image>
+                  }))
+                })}
                 <TouchableHighlight activeOpacity={1} style={styles.placeModeMap} onPress={(data) => {this.handlePlace(data)}}>
                   <Image 
                   style={{height: '100%', width: (Layout.window.height* 1.20)}}
