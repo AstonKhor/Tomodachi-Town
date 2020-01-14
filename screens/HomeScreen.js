@@ -1,13 +1,11 @@
-import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { Image, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Button, Modal, TouchableHighlight } from 'react-native';
-import Layout from '../constants/Layout.js';
+import { Image, Platform, ScrollView, StyleSheet, TouchableOpacity, View, TouchableHighlight } from 'react-native';
 import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/ReactNativeZoomableView';
+import Layout from '../constants/Layout.js';
 import { _retrieveData, _storeData } from './async-storage/data.js'
-import { MonoText } from '../components/StyledText';
 import { EditModal } from './home-modal/EditModal.js';
 import seed from '../components/seed.js';
-import images from '../assets/characters/characters';
+import images from '../assets/characters/characters.js';
 
 
 class HomeScreen extends React.Component {
@@ -15,10 +13,10 @@ class HomeScreen extends React.Component {
     super(props);
     this.state = {
       people: [],
-      editModalVisible: false,
+      person: '',
       count: 0,
+      editModalVisible: false,
       placeMode: false,
-      person: ''
     }
     _storeData(seed());  //for testing only, delete in production
 
@@ -50,12 +48,11 @@ class HomeScreen extends React.Component {
         })
       })
   }
-  //create Modal with different player info
+
   reset(person) {
-    let peopleUpdate = [];
+    let peopleUpdate = JSON.parse(JSON.stringify(this.state.people));
     if (person) {
       for (let i = 0; i < this.state.people.length; i++) {
-        peopleUpdate[i] = JSON.parse(JSON.stringify(this.state.people[i]));
         if (this.state.people[i].name === person.name) {
           peopleUpdate[i].locx = [];
           peopleUpdate[i].locy = [];
@@ -63,7 +60,6 @@ class HomeScreen extends React.Component {
       }
     } else {
       for (let i = 0; i < this.state.people.length; i++) {
-        peopleUpdate[i] = JSON.parse(JSON.stringify(this.state.people[i]));
         peopleUpdate[i].locx = [];
         peopleUpdate[i].locy = [];
       }
@@ -75,24 +71,20 @@ class HomeScreen extends React.Component {
       })
   }
 
-  togglePlaceMode (person, count) {
+  togglePlaceMode (person = this.state.person, count) {
+    let placeMode = false;
     if (count > 0) {
-      this.setState({
-        count: count,
-        editModalVisible: false,
-        placeMode: true,
-        person: person
-      }, ()=>{console.log(this.state)})
-    } else {
-      this.setState({
-        count: count,
-        editModalVisible: false,
-        placeMode: false
-      }, ()=>{console.log(this.state)})
+      placeMode = true;
     }
+    this.setState({
+      count: count,
+      editModalVisible: false,
+      placeMode: placeMode,
+      person: person
+    })
   }
 
-  handlePlace (data, callback) {
+  handlePlace (data) {
     if (this.state.placeMode) {
       let locx = data.touchHistory.touchBank[1].currentPageX;
       let locy = data.touchHistory.touchBank[1].currentPageY;
@@ -159,35 +151,11 @@ HomeScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  logo: {
-    marginLeft: 10,
-    height: 70,
-    width: 298,
-  },
-  add: {
-    height: 40,
-    width: 40,
-    marginLeft: 0,
-    marginTop: 10,
-    backgroundColor: '#ffd4b7',
-    borderRadius: 20
-  },
-  placeModeMap: {
-    zIndex: 105,
-    opacity: 1
-  },
-  map: {
-    zIndex: 100,
-    flex: 1,
-    opacity: 1,
-    backgroundColor: '#266402',
-  },
-  tabBarInfoContainer: {
-    width: '100%',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
+  logo: { marginLeft: 10, height: 70, width: 298 },
+  add: { height: 40, width: 40, marginLeft: 0, marginTop: 10, backgroundColor: '#ffd4b7', borderRadius: 20 },
+  placeModeMap: { zIndex: 105, opacity: 1 },
+  map: { zIndex: 100, flex: 1, opacity: 1, backgroundColor: '#266402' },
+  tabBarInfoContainer: { width: '100%', position: 'absolute', bottom: 0, left: 0, right: 0, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', paddingVertical: 20,
     ...Platform.select({
       ios: {
         shadowColor: 'black',
@@ -198,15 +166,8 @@ const styles = StyleSheet.create({
       android: {
         elevation: 20,
       },
-    }),
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 20,
-  },
-  navigationFilename: {
-    marginTop: 5,
-  }
+    }) },
+  navigationFilename: { marginTop: 5 }
 });
 
 

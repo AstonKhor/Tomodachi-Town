@@ -6,8 +6,8 @@ let seed = () => {
   for (let i = 0; i < names.length; i++) {
     let babySeed = {};
     babySeed.name = names[i];
-    babySeed.character = 'char' + Math.ceil(Math.random() * 4);
-    babySeed.count = Math.ceil(Math.random() * 5);
+    babySeed.character = 'char' + Math.ceil(Math.random() * 5);
+    babySeed.count = Math.ceil(Math.random() * 4);
     babySeed.dob = months[Math.floor(Math.random() * 12)] + ' ' + Math.ceil(Math.random() * 30);
     babySeed.goalHangouts = Math.ceil(Math.random() * 20);
     babySeed.hangoutsYTD = Math.ceil(Math.random() * babySeed.goalHangouts * 1.5);
@@ -15,6 +15,7 @@ let seed = () => {
     babySeed.locy = [];
     seedData.push(babySeed);
   }
+  //sort by name
   seedData.sort((a,b) => {
     if (a.name > b.name) {
       return 1;
@@ -24,6 +25,7 @@ let seed = () => {
     }
     return 0;
   });
+  //sort by hangouts
   seedData.sort((a,b) => {
     if (a.goalHangouts > b.goalHangouts) {
       return -1;

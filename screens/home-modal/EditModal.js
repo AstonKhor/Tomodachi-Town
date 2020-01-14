@@ -1,8 +1,8 @@
-import { Modal, View, Text, Image, StyleSheet, TouchableHighlight } from 'react-native';
 import React from 'react';
+import { View, Text, Image, StyleSheet, TouchableHighlight } from 'react-native';
 import { Button, Overlay } from 'react-native-elements';
-import images from '../../assets/characters/characters.js';
 import { ScrollView } from 'react-native-gesture-handler';
+import images from '../../assets/characters/characters.js';
 
 export let EditModal = ({ visible, people, edit, reset, placeMode }) => {
   return (
@@ -12,7 +12,6 @@ export let EditModal = ({ visible, people, edit, reset, placeMode }) => {
         isVisible={visible}
         windowBackgroundColor="rgba(255, 255, 255, 0)"
         overlayBackgroundColor="rgba(0, 0, 0, .9)"
-        style={styles.overlay}
         borderRadius={20}>
       <ScrollView style={{borderColor: 'black'}}>
         <View style={{padding: 10, justifyContent: 'center', alignItems: 'center'}}>
@@ -44,35 +43,10 @@ export let EditModal = ({ visible, people, edit, reset, placeMode }) => {
 }
     
 let styles = StyleSheet.create({
-  rowText: {
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  image: {
-    width: 25,
-    height: 32,
-  },
-  overlay: {
-    opacity: .5,
-  },
-  logo: {
-    height: 64,
-    width: 272,
-    justifyContent: 'center',
-  },
-  buttons: {
-    flexDirection: 'column',
-  },
-  button: {
-    backgroundColor: 'green',
-    margin: 5,
-  },
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 2,
-    alignItems:'center',
-    borderBottomColor: '#ffbab5',
-    color: 'white',
-  }
+  rowText: { color: 'white', fontWeight: 'bold' },
+  image: { width: 25, height: 32 },
+  logo: { height: 64, width: 272, justifyContent: 'center' },
+  buttons: { flexDirection: 'column' },
+  button: { backgroundColor: 'green', margin: 5 },
+  row: { flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 2, alignItems:'center', borderBottomColor: '#ffbab5', color: 'white' }
 })
