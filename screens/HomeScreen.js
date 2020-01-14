@@ -6,6 +6,7 @@ import ReactNativeZoomableView from '@dudigital/react-native-zoomable-view/src/R
 import { _retrieveData, _storeData } from './async-storage/data.js'
 import { MonoText } from '../components/StyledText';
 import { EditModal } from './home-modal/EditModal.js';
+import seed from '../components/seed.js';
 
 
 class HomeScreen extends React.Component {
@@ -16,8 +17,7 @@ class HomeScreen extends React.Component {
       editModalVisible: false,
       count: 0,
     }
-    let sampleData = [{name: 'Aston Khor', count: 1, character: 'char1', locx: [50], locy: [50], dob: '6/1', hangoutsYTD: 5, goalHangouts: 10}, {name: 'Andrew', count: 1, character: 'char1', locx: [50], locy: [50], dob: '6/1', hangoutsYTD: 3, goalHangouts: 12}, {name: 'Rachel', count: 1, character: 'char1', locx: [50], locy: [50], dob: '6/1', hangoutsYTD: 5, goalHangouts: 10}, {name: 'Jeff', count: 1, character: 'char1', locx: [50], locy: [50], dob: '6/1', hangoutsYTD: 0, goalHangouts: 0}]
-    _storeData(sampleData);  //for testing only, delete in production
+    _storeData(seed());  //for testing only, delete in production
 
     this.edit = this.edit.bind(this);
     this.reset = this.reset.bind(this);
