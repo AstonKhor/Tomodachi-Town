@@ -51,7 +51,7 @@ class HomeScreen extends React.Component {
     let peopleUpdate = [];
     if (person) {
       for (let i = 0; i < this.state.people.length; i++) {
-        peopleUpdate[i] = JSON.parse(JSON.stringify(this.state.person[i]));
+        peopleUpdate[i] = JSON.parse(JSON.stringify(this.state.people[i]));
         if (this.state.people[i].name === person.name) {
           peopleUpdate[i].locx = [];
           peopleUpdate[i].locy = [];
@@ -60,7 +60,9 @@ class HomeScreen extends React.Component {
       console.log('Resetting one', person.name);
     } else {
       for (let i = 0; i < this.state.people.length; i++) {
-        peopleUpdate[i] = JSON.parse(JSON.stringify(this.state.person[i]));
+        peopleUpdate[i] = JSON.parse(JSON.stringify(this.state.people[i]));
+        peopleUpdate[i].locx = [];
+        peopleUpdate[i].locy = [];
       }
       console.log('Resetting All');
     }
@@ -68,7 +70,7 @@ class HomeScreen extends React.Component {
     _storeData(this.state.people)
       .then(() => {
         // console.log(peopleUpdate);
-        this.com
+        this.retrieveAndUpdate();
       })
   }
 
