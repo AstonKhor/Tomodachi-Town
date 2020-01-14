@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, Image, StyleSheet, Picker, Button, View } from 'react-native';
 import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
 // import { EditModal } from './friends-modal/EditModal';
+// import { DataTable } from 'react-native-paper';
 import AddModal from './friends-modal/AddModal.js';
 import { _retrieveData, _storeData } from './async-storage/data';
 
@@ -64,7 +65,7 @@ class FriendsScreen extends React.Component {
     console.log('copy', copy);
     _storeData(copy)
       .then(() => {
-        this.componentDidMount();
+        this.toggleModal(!this.state.addModalVisible);
       })
   }
 
@@ -82,7 +83,11 @@ class FriendsScreen extends React.Component {
           <Row data={this.state.tableHead} flexArr={[1, 2, 1, 1]} style={styles.head} textStyle={styles.text}/>
             <TableWrapper style={styles.wrapper}>
               <Col data={this.state.tableTitle} style={styles.title} heightArr={[28,28]} textStyle={styles.text}/>
-              <Rows data={this.state.tableData} flexArr={[2, 1, 1]} style={styles.row} textStyle={styles.text}/>
+              {this.state.tableData.map((row, idx) => {
+                console.log('row', row);
+                return <Row key={idx} data={row} flexArr={[2, 1, 1]} style={styles.row} textStyle={styles.text}/>
+              })}
+              {/* <Rows data={this.state.tableData} flexArr={[2, 1, 1]} style={styles.row} textStyle={styles.text}/> */}
             </TableWrapper>
           </Table>
           <Picker selectedValue={this.state.sort}

@@ -1,7 +1,7 @@
 import { Modal, View, Text, Image, StyleSheet, TouchableHighlight, ScrollView } from 'react-native';
 import React from 'react';
 import images from '../../assets/characters/characters.js';
-import { Input, Button } from 'react-native-elements';
+import { Input, Button, Overlay } from 'react-native-elements';
 import { _retrieveData, _storeData } from '../async-storage/data';
 
 class AddModal extends React.Component {
@@ -36,11 +36,11 @@ class AddModal extends React.Component {
 
   render() {
     return (
-      <Modal
+      <Overlay
         animationType="slide"
         transparent={false}
-        visible={this.props.visible}>
-        <View style={{ marginTop: 22, padding: 50 }}>
+        isVisible={this.props.visible}>
+        <View style={{ marginTop: 0, padding: 15 }}>
           <Input placeholder='Name' onChangeText={(text) => this.setState({name: text})} errorStyle={{ color: 'red' }} errorMessage='ENTER A VALID NAME' />
           <Input placeholder='DOB' onChangeText={(text) => this.setState({dob: text})} errorStyle={{ color: 'red' }} errorMessage='ENTER A VALID DOB' />
           <Text style={styles.currSelectChar}>{this.currentSelection}</Text>
@@ -65,7 +65,7 @@ class AddModal extends React.Component {
           <Button buttonStyle={styles.submit} title="Add" onPress={() => { this.handleAdd() }} />
           <Button buttonStyle={styles.cancel} title="Cancel" onPress={() => { this.props.toggleModal(!this.props.visible) }} />
         </View>
-      </Modal>
+      </Overlay>
     )
   }
 
