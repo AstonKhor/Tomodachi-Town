@@ -100,7 +100,7 @@ class FriendsScreen extends React.Component {
         </View>
         <ScrollView style={styles.container}>
           <View style={styles.editAdd}>
-            <Button title='Edit/Add' onPress={() => {this.toggleModal(!this.state.editModalVisible)}}></Button>
+            <Button title='Edit' onPress={() => {}}></Button>
             <Button title='Add' onPress={() => {this.toggleModal(!this.state.addModalVisible)}}></Button>
           </View>
           <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
