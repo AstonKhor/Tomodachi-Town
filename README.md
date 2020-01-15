@@ -4,9 +4,7 @@ As an introvert, I have always struggled to continue to reach out to friends. I 
 
 ## Preview
 
-![gif preview](https://raw.githubusercontent.com/mbeaudru/react-native-sample/master/assets/preview.gif)
-
-> Note: 6MB size GIF, might take some time to load
+![gif preview](https://media.giphy.com/media/TEdG00Y1ctgzjlKWeM/giphy.gif)
 
 ## Main technologies used
 
