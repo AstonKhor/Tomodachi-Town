@@ -1,6 +1,6 @@
 # Context and goal
 
-As an introvert, I have always struggled to continue to reach out to friends. I had previously kept an excel sheet of friends and how often I want to hang out with them every year. Then I can tick off in there everytime I see them. Subsequently it lets me know that I am reaching my goal of hangouts. This app is my attempt at gamifying that habit of conscientiousness with friends to make it a fun experience. 
+This app is built to gamifying that habit of conscientiousness with friends to make it a fun experience. The app will allow you to set goals for number of hangouts with friends and will notify you of their birthdays, all with a cute interface.
 
 ## Preview
 
